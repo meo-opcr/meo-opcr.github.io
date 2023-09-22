@@ -20,6 +20,25 @@
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
+
+            // Reset the input field when "x" button is clicked
+            $("#resetSearch").on("click", function() {
+                $("#searchInput").val('').trigger('keyup');
+            });
+
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                var count = 0;
+                
+                $(".table tbody tr").filter(function() {
+                    var match = $(this).text().toLowerCase().indexOf(value) > -1;
+                    $(this).toggle(match);
+                    if (match) count++;
+                });
+
+                // Update the record count
+                $("#recordCount").text("Total Records: " + count);
+            });
         });
         
     </script>
@@ -32,6 +51,7 @@
         }
 
         .table, .myheader {
+            align-items: center;
             position: sticky;
             top: 0;
             z-index: 1;
@@ -60,44 +80,90 @@
             border-left: none;               /* Remove left border to merge with the input field */
         }
         
+        #resetSearch, .input-group-text {
+            background-color: transparent;  /* Set a transparent background */
+            border: none;                   /* Remove border */
+            color: #aaa;                    /* Set color to light gray */
+        }
         
+        #resetSearch:hover {
+            color: #333;                    /* Darker color on hover */
+        }
+        
+        .input-group-text {
+            border-right: none;             /* Remove the right border to blend with the input field */
+        }
+        
+        .reset-btn {
+            border-left: none;              /* Remove the left border to blend with the input field */
+        }
+        
+        #recordCount {
+            display: inline-block; /* Make it an inline block so it doesn't take full width */
+            margin: 0 auto;        /* Center the badge */
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            color: #fff;
+        }
 
+        th, td {
+            text-align: center;     /* Horizontally center the text */
+            vertical-align: middle; /* Vertically center the text */
+        }
+        
     </style>
 </head>
 <body>
-    <h3>MEO OPCR 2023</h3>
-    <div class="input-group input-group-sm">
-        <input class="form-control form-control-sm" id="searchInput" type="text" placeholder="Search your name...">
-        <div class="input-group-append">
-            <span class="input-group-text">
-                <i class="bi bi-search"></i>
-            </span>
+    
+    <div class="d-flex align-items-center justify-content-center" style="padding-top: 20px;">
+        <h3 class="text-center">MEO OPCR 2023</h3>
+    </div>
+    
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                    </div>
+                    <input class="form-control form-control-sm" id="searchInput" type="text" placeholder="Search..">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary reset-btn" type="button" id="resetSearch">
+                            &times;
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-2 text-center">
+                    <span class="badge badge-primary badge-pill" id="recordCount">Total Records: 0</span>
+                </div>
+            </div>
         </div>
     </div>
+    
     
     <br>
     <div class="table-responsive">
         <table  id="myTable" class="table table-striped table-bordered table-hover" style="width:100%">
-            <thead>
+            <thead class="centered-header" style="vertical-align: middle;">
             <tr class = "myheader">
-                <th>#</th>
-                <th>OFFICE GOAL</th>
-                <th></th>
-                <th>SUCCESS INDICATORS</th>
-                <th>ALLOTED BUDGET</th>
-                <th>UNIT/INDIVIDUAL ACCOUNTABLE</th>
-                <th colspan="3">DISTRIBUTION</th> 
+                <th rowspan="2" style="vertical-align: middle;">#</th>
+                <th colspan="2" style="vertical-align: middle;">OFFICE GOAL</th>
+
+                <th rowspan="2" style="vertical-align: middle;">SUCCESS INDICATORS</th>
+                <th rowspan="2" style="vertical-align: middle;">ALLOTED BUDGET</th>
+                <th rowspan="2" style="vertical-align: middle;">UNIT/INDIVIDUAL ACCOUNTABLE</th>
+                <th colspan="3" style="text-align: center; vertical-align: middle;">DISTRIBUTION</th> 
             </tr>
             <tr>
-                <th></th>
-                <th>CORE FUNCTIONS (MFO/PAP)</th>
-                <th>SUPPORT FUNCTION</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>2023</th>
-                <th>2024</th>
-                <th>2025</th>
+                <th style="vertical-align: middle;">CORE FUNCTIONS (MFO/PAP)</th>
+                <th style="vertical-align: middle;">SUPPORT FUNCTION</th>
+                <!-- <th colspan="3"></th> -->
+                <th style="vertical-align: middle;">2023</th>
+                <th style="vertical-align: middle;">2024</th>
+                <th style="vertical-align: middle;">2025</th>
             </tr>
         </thead>
             <tbody> 
